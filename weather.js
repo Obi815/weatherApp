@@ -47,14 +47,8 @@ function displayWeather(data) {
         const iconCode = data.weather[0].icon;
         const iconUrl = `https://openweathermap.org/img/wn/${iconCode}@4x.png`;
 
-        const temperatureHTML = `
-            <p>${temperature}°F</p>
-        `;
-
-        const weatherHtml = `
-            <p>${cityName}</p>
-            <p>${description}</p>
-        `;
+        const temperatureHTML = `<p>${temperature}°F</p>`;
+        const weatherHtml = `<p>${cityName}</p><p>${description}</p>`;
 
         tempDivInfo.innerHTML = temperatureHTML;
         weatherInfoDiv.innerHTML = weatherHtml;
@@ -67,19 +61,26 @@ function displayWeather(data) {
 
 function displayHourlyForecast(hourlyData) {
     const hourlyForecastDiv = document.getElementById('hourly-forecast');
+    hourlyForecastDiv.innerHTML = ''; // Clear previous data
 
     const next24Hours = hourlyData.slice(0, 8); // Display the next 24 hours (3-hour intervals)
 
     next24Hours.forEach(item => {
         const dateTime = new Date(item.dt * 1000);
-        const hour = dateTime.getHours();
+
+        // Convert to 12-hour format
+        let hour = dateTime.getHours();
+        const ampm = hour >= 12 ? 'PM' : 'AM';
+        hour = hour % 12;
+        hour = hour ? hour : 12; // 0 should be 12
+
         const temperature = Math.round((item.main.temp - 273.15) * 9 / 5 + 32); // Convert to °F
         const iconCode = item.weather[0].icon;
         const iconUrl = `https://openweathermap.org/img/wn/${iconCode}.png`;
 
         const hourlyItemHtml = `
             <div class="hourly-item">
-                <span>${hour}:00</span>
+                <span>${hour}:00 ${ampm}</span>
                 <img src="${iconUrl}" alt="Hourly Weather Icon">
                 <span>${temperature}°F</span>
             </div>
@@ -93,5 +94,6 @@ function showImage() {
     const weatherIcon = document.getElementById('weather-icon');
     weatherIcon.style.display = 'block';
 }
+
 
 
