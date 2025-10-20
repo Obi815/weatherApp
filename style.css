@@ -19,7 +19,13 @@ body {
     text-align: center;
 }
 
-h2, label, p {
+p {
+    letter-spacing: 5px;
+}
+
+h2,
+label,
+p {
     color: #fff;
     margin: 8px 0;
 }
@@ -61,7 +67,7 @@ button:hover {
 #weather-icon {
     width: 200px;
     height: 200px;
-    margin: 0 auto 10px; 
+    margin: 0 auto 10px;
     margin-bottom: 0;
     display: none;
 }

@@ -12,9 +12,7 @@ function getWeather() {
 
     fetch(currentWeatherUrl)
         .then(response => response.json())
-        .then(data => {
-            displayWeather(data);
-        })
+        .then(data => displayWeather(data))
         .catch(error => {
             console.error('Error fetching current weather data:', error);
             alert('Error fetching current weather data. Please try again.');
@@ -22,9 +20,7 @@ function getWeather() {
 
     fetch(forecastUrl)
         .then(response => response.json())
-        .then(data => {
-            displayHourlyForecast(data.list);
-        })
+        .then(data => displayHourlyForecast(data.list))
         .catch(error => {
             console.error('Error fetching hourly forecast data:', error);
             alert('Error fetching hourly forecast data. Please try again.');
@@ -46,13 +42,13 @@ function displayWeather(data) {
         weatherInfoDiv.innerHTML = `<p>${data.message}</p>`;
     } else {
         const cityName = data.name;
-        const temperature = Math.round(data.main.temp - 273.15); // Convert to Celsius
+        const temperature = Math.round((data.main.temp - 273.15) * 9 / 5 + 32); // Convert to °F
         const description = data.weather[0].description;
         const iconCode = data.weather[0].icon;
         const iconUrl = `https://openweathermap.org/img/wn/${iconCode}@4x.png`;
 
         const temperatureHTML = `
-            <p>${temperature}°C</p>
+            <p>${temperature}°F</p>
         `;
 
         const weatherHtml = `
@@ -75,9 +71,9 @@ function displayHourlyForecast(hourlyData) {
     const next24Hours = hourlyData.slice(0, 8); // Display the next 24 hours (3-hour intervals)
 
     next24Hours.forEach(item => {
-        const dateTime = new Date(item.dt * 1000); // Convert timestamp to milliseconds
+        const dateTime = new Date(item.dt * 1000);
         const hour = dateTime.getHours();
-        const temperature = Math.round(item.main.temp - 273.15); // Convert to Celsius
+        const temperature = Math.round((item.main.temp - 273.15) * 9 / 5 + 32); // Convert to °F
         const iconCode = item.weather[0].icon;
         const iconUrl = `https://openweathermap.org/img/wn/${iconCode}.png`;
 
@@ -85,7 +81,7 @@ function displayHourlyForecast(hourlyData) {
             <div class="hourly-item">
                 <span>${hour}:00</span>
                 <img src="${iconUrl}" alt="Hourly Weather Icon">
-                <span>${temperature}°C</span>
+                <span>${temperature}°F</span>
             </div>
         `;
 
@@ -95,6 +91,7 @@ function displayHourlyForecast(hourlyData) {
 
 function showImage() {
     const weatherIcon = document.getElementById('weather-icon');
-    weatherIcon.style.display = 'block'; // Make the image visible once it's loaded
+    weatherIcon.style.display = 'block';
 }
+
 
